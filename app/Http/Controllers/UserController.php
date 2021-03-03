@@ -63,6 +63,24 @@ class UserController extends Controller
         }
     }
 
+    public function logout(){
+        $user = Auth::user();
+
+        if(!is_null($user)){
+            $deleted = $user->currentAccessToken()->delete();
+
+            if($deleted){
+                return response()->json(['status'=>'success', 'message'=>'Logout success']);
+            }
+            else{
+                return response()->json(['status'=>'failed', 'message'=>'Logout fail']);
+            }
+        }
+        else{
+            return response()->json(["status" => "failed", "message" => "Whoops! no user found"]);
+        }
+    }
+
     public function user(Request $request){
         $user = Auth::user();
         

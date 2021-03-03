@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,12 @@ use App\Http\Controllers\UserController;
 Route::post("register", [UserController::class, "register"]);
 Route::post("login", [UserController::class, "login"]);
 
+
 Route::middleware('auth:api')->group(function() {
     Route::get("user", [UserController::class, "user"]);
+    Route::post("logout", [UserController::class, "logout"]);
+    Route::resource("post", PostController::class);
 });
+
+Route::get("post/{post:slug}", [PostController::class, "show"])->name('post.show');
+Route::get("post", [PostController::class, "index"])->name('post.index');
